@@ -23,10 +23,15 @@ export default (function () {
       const response = await fetch(geocodeUrl);
       data = await response.json();
     } catch (error) {
-      return error.message;
+      return Promise.reject(error.message);
     }
-    const { lat, lon } = data[0];
-    return { lat, lon };
+
+    if (data.length > 0) {
+      const { lat, lon } = data[0];
+      return { lat, lon };
+    } else {
+      return Promise.reject(`No data for ${cityName}`);
+    }
   }
 
   /**
@@ -34,22 +39,35 @@ export default (function () {
    * propagate the error message to the caller.
    */
   async function getWeather(cityName) {
-    const { lat, lon } = await _getCoords(cityName);
-
-    const apiUrl =
-      "https://api.openweathermap.org/data/2.5/onecall" +
-      `?lat=${lat}&lon=${lon}&exclude=minutely` +
-      `&units=imperial` +
-      `&appid=${API_KEY}`;
     let data;
+
     try {
+      const { lat, lon } = await _getCoords(cityName);
+      const apiUrl =
+        "https://api.openweathermap.org/data/2.5/onecall" +
+        `?lat=${lat}&lon=${lon}&exclude=minutely` +
+        `&units=imperial` +
+        `&appid=${API_KEY}`;
+
       const response = await fetch(apiUrl);
       data = await response.json();
     } catch (error) {
-      return error.message;
+      return Promise.reject(error);
     }
     return data;
   }
 
-  return { getWeather };
+  /**
+   * Return the icon url for the provided icon code.
+   * This is the url to be used as an img.src
+   */
+  function getIconSrc(iconCode, options = { large: false }) {
+    if (options.large) {
+      return `http://openweathermap.org/img/wn/${iconCode}@2x.png`;
+    } else {
+      return `http://openweathermap.org/img/wn/${iconCode}.png`;
+    }
+  }
+
+  return { getWeather, getIconSrc };
 })();

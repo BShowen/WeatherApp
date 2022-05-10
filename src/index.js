@@ -5,14 +5,15 @@
 import "./Skeleton/css/normalize.css";
 import "./Skeleton/css/skeleton.css";
 
-// The module for retrieving weather data.
-import weather from "./weather.js";
+/**
+ * Import the layout styling. This is where layout classes are defined.
+ */
+import "./index.css";
 
-import { Row, Column } from "./skeleton.js";
+import { searchComponent } from "./searchComponent.js";
 
-// The root node where all children should be appended.
-const root = document.querySelector("#root");
-
-weather.getWeather("Orlando").then((data) => {
-  console.log(data);
-});
+(function () {
+  const rootNode = document.querySelector("#root");
+  const search = searchComponent(rootNode);
+  search.render();
+})();

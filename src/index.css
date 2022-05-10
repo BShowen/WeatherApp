@@ -1,0 +1,32 @@
+#root{
+  padding-top: 50px;
+  margin-top: 50px;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-no-wrap{
+  flex-wrap: nowrap;
+}
+
+.flex-justify-center {
+  justify-content: center;
+}
+
+.flex-align-center {
+  align-items: center;
+}
+
+.debug {
+  border: 2px solid red;
+}
