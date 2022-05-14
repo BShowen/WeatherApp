@@ -9,32 +9,24 @@ export function ForecastCard(weatherData = {}) {
   // Process the weatherData upon instantiation
   const parsedWeatherData = (function () {
     const { max, min } = weatherData.temp;
-    const { humidity, clouds, dt } = weatherData;
+    const { dt, pop } = weatherData;
     const formatter = new Intl.DateTimeFormat([], { weekday: "short" });
     const dateTime = formatter.format(
       new Date(Number.parseInt(dt.toString() + "000"))
     );
-    const { description, icon } = weatherData.weather[0];
+    const { icon } = weatherData.weather[0];
     return {
       dateTime,
-      description,
       max,
       min,
-      humidity,
-      clouds,
+      pop,
       icon,
     };
   })();
 
   const container = new HtmlElement({
     type: "div",
-    classList: [
-      "daily-weather-card",
-      "flex",
-      "flex-column",
-      "flex-justify-center",
-      "flex-align-center",
-    ],
+    classList: ["forecast-card", "flex", "flex-row", "flex-align-center"],
   });
 
   /**
@@ -60,42 +52,29 @@ export function ForecastCard(weatherData = {}) {
   };
 
   const render = function (parentNode) {
-    container.appendChild(image);
-
     container.appendChild(
       new HtmlElement({
-        type: "p",
+        type: "h5",
         innerText: parsedWeatherData.dateTime,
       })
     );
+    container.appendChild(image);
     container.appendChild(
       new HtmlElement({
-        type: "p",
-        innerText: parsedWeatherData.description,
+        typ: "p",
+        innerText: `${Math.floor(parsedWeatherData.pop * 100)}% rain`,
       })
     );
     container.appendChild(
       new HtmlElement({
         type: "p",
-        innerText: `High: ${parsedWeatherData.max}`,
+        innerText: `L: ${Math.round(parsedWeatherData.min)}`,
       })
     );
     container.appendChild(
       new HtmlElement({
         type: "p",
-        innerText: `Low: ${parsedWeatherData.min}`,
-      })
-    );
-    container.appendChild(
-      new HtmlElement({
-        type: "p",
-        innerText: `Humidity: ${parsedWeatherData.humidity}`,
-      })
-    );
-    container.appendChild(
-      new HtmlElement({
-        type: "p",
-        innerText: `Clouds: ${parsedWeatherData.clouds}%`,
+        innerText: `H: ${Math.round(parsedWeatherData.max)}`,
       })
     );
 

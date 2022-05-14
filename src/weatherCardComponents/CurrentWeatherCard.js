@@ -130,20 +130,16 @@ export function CurrentWeatherCard(weatherData = {}, rootNode, cityName) {
     return container;
   })();
 
-  const load = async function () {
+  const render = async function () {
+    _skeletonRow.appendChild(_skeletonColumn);
+    _skeletonColumn.appendChild(_container);
     _container.appendChild(_title);
     _container.appendChild(_temp);
     _container.appendChild(_description);
     _container.appendChild(_dailyTemps);
-    return true;
-  };
-
-  const render = async function () {
-    _skeletonRow.appendChild(_skeletonColumn);
-    _skeletonColumn.appendChild(_container);
 
     rootNode.appendChild(_skeletonRow);
   };
 
-  return { container: _skeletonRow, render, load };
+  return { container: _skeletonRow, render };
 }

@@ -61,7 +61,7 @@ export function forecastLoader() {
     _forecastContainer.remove();
     _forecastContainer = new HtmlElement({
       type: "div",
-      classList: ["forecast-container", "flex", "flex-row", "flex-no-wrap"],
+      classList: ["forecast-container"],
     });
     dailyForecasts = [];
   };

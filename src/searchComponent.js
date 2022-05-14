@@ -22,15 +22,22 @@ export function searchComponent(rootNode) {
 
   const _componentContainer = new HtmlElement({
     type: "div",
-    classList: ["row", "input-container"],
+    classList: [
+      "row",
+      "input-container",
+      "flex",
+      "flex-row",
+      "flex-justify-center",
+      "flex-align-center",
+    ],
   });
 
   const _searchBar = new HtmlElement({
     type: "input",
-    classList: ["u-full-width"],
     attributes: {
       type: "text",
       placeholder: "Enter a city name",
+      style: "width: 90%",
     },
     id: "cityName",
   });
@@ -73,11 +80,10 @@ export function searchComponent(rootNode) {
       );
       _currentWeatherCard = todaysWeather.container;
 
-      await Promise.all([
-        todaysWeather.load(),
-        forecast.loadForecast(weatherData),
-      ]);
+      await forecast.loadForecast(weatherData);
       todaysWeather.render();
+
+      // todaysWeather.render();
       forecast.renderForecast(rootNode);
     } catch (error) {
       console.log(error);
