@@ -66,7 +66,11 @@ export function searchComponent(rootNode) {
     try {
       const weatherData = await weather.getWeather(e.target.value);
 
-      const todaysWeather = new CurrentWeatherCard(weatherData, rootNode);
+      const todaysWeather = new CurrentWeatherCard(
+        weatherData,
+        rootNode,
+        e.target.value.trim()
+      );
       _currentWeatherCard = todaysWeather.container;
 
       await Promise.all([

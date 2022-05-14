@@ -39,6 +39,23 @@
   flex-basis: 50px;
 }
 
+.m-0 {
+  margin: 0;
+}
+
+.ml-5 {
+  margin-left: 5px;
+}
+
+.mr-5 {
+  margin-right: 5px;
+}
+
+/* this is the main temp under the city name */
+#main-temp {
+  font-size: 9rem;
+}
+
 /* Larger than mobile */
 @media (min-width: 400px) {
   body {
