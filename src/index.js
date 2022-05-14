@@ -14,6 +14,6 @@ import { searchComponent } from "./searchComponent.js";
 
 (function () {
   const rootNode = document.querySelector("#root");
-  const search = searchComponent(rootNode);
-  search.render();
+  const searchBar = searchComponent(rootNode);
+  searchBar.render();
 })();

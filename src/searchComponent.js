@@ -1,7 +1,8 @@
 // The module for creating Skeleton js components.
 import { HtmlElement } from "./HtmlElement.js";
 import { errorMessage } from "./errorMessage.js";
-import { CurrentWeatherCard } from "./CurrentWeatherCard.js";
+import { CurrentWeatherCard } from "./weatherCardComponents/CurrentWeatherCard.js";
+import { forecastLoader } from "./weatherCardComponents/forecastLoader.js";
 import weather from "./weather.js";
 
 export function searchComponent(rootNode) {
@@ -17,14 +18,11 @@ export function searchComponent(rootNode) {
    */
   let _currentWeatherCard;
 
-  const _rowContainer = new HtmlElement({
-    type: "div",
-    classList: ["row"],
-  });
+  const forecast = forecastLoader();
 
-  const _columnContainer = new HtmlElement({
+  const _componentContainer = new HtmlElement({
     type: "div",
-    classList: ["twelve", "columns"],
+    classList: ["row", "input-container"],
   });
 
   const _searchBar = new HtmlElement({
@@ -46,6 +44,7 @@ export function searchComponent(rootNode) {
    */
   const _handleKeydown = async function (e) {
     if (e.key != "Enter") return;
+    if (screen.width < 500) _searchBar.blur();
     _processData(e);
   };
 
@@ -62,16 +61,23 @@ export function searchComponent(rootNode) {
     //Remove any previous error messages
     if (_errorMessageComponent) _errorMessageComponent.remove();
     if (_currentWeatherCard) _currentWeatherCard.remove();
-
-    let data;
+    forecast.removeForecasts();
 
     try {
-      const currentWeatherData = await weather.getWeather(e.target.value);
-      const weatherCard = new CurrentWeatherCard(currentWeatherData, rootNode);
-      _currentWeatherCard = weatherCard.container;
-      weatherCard.render();
+      const weatherData = await weather.getWeather(e.target.value);
+
+      const todaysWeather = new CurrentWeatherCard(weatherData, rootNode);
+      _currentWeatherCard = todaysWeather.container;
+
+      await Promise.all([
+        todaysWeather.load(),
+        forecast.loadForecast(weatherData),
+      ]);
+      todaysWeather.render();
+      forecast.renderForecast(rootNode);
     } catch (error) {
-      _errorMessageComponent = errorMessage(error.message);
+      console.log(error);
+      _errorMessageComponent = errorMessage(error);
       rootNode.appendChild(_errorMessageComponent);
     }
   };
@@ -79,12 +85,9 @@ export function searchComponent(rootNode) {
   const render = function () {
     // Listen for the user pressing the Enter key
     _searchBar.addEventListener("keydown", _handleKeydown);
-    // When the form loses focus, process it. This is for mobile.
-    _searchBar.addEventListener("blur", _processData);
 
-    _rowContainer.appendChild(_columnContainer);
-    _columnContainer.appendChild(_searchBar);
-    rootNode.appendChild(_rowContainer);
+    _componentContainer.appendChild(_searchBar);
+    rootNode.appendChild(_componentContainer);
     _focus();
   };
 
