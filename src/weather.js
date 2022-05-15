@@ -17,7 +17,7 @@ export default (function () {
   async function _getCoords(cityName) {
     let data;
     const geocodeUrl =
-      "http://api.openweathermap.org/geo/1.0/direct" +
+      "https://api.openweathermap.org/geo/1.0/direct" +
       `?q=${cityName}&appid=${API_KEY}`;
     try {
       const response = await fetch(geocodeUrl);
@@ -63,9 +63,9 @@ export default (function () {
    */
   function getIconSrc(iconCode, options = { large: false }) {
     if (options.large) {
-      return `http://openweathermap.org/img/wn/${iconCode}@2x.png`;
+      return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
     } else {
-      return `http://openweathermap.org/img/wn/${iconCode}.png`;
+      return `https://openweathermap.org/img/wn/${iconCode}.png`;
     }
   }
 
