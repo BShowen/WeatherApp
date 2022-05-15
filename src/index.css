@@ -88,6 +88,23 @@
     width: 90%;
     justify-content: space-evenly;
   }
+
+  .hourly-forecast-container {
+    overflow: scroll;
+    margin-top: 50px;
+    -webkit-box-shadow: 0px 0px 12px 0px rgba(230,230,230,0.5); 
+    box-shadow: 0px 0px 12px 0px rgba(230,230,230,0.5);
+    padding: 10px 0;
+  }
+
+  .hourly-forecast-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 100px;
+  }
 }
 
 /* Larger than phablet (also point when grid becomes active) */

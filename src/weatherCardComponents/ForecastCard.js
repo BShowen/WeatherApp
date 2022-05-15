@@ -68,13 +68,13 @@ export function ForecastCard(weatherData = {}) {
     container.appendChild(
       new HtmlElement({
         type: "p",
-        innerText: `L: ${Math.round(parsedWeatherData.min)}`,
+        innerText: `L: ${Math.round(parsedWeatherData.min)}°`,
       })
     );
     container.appendChild(
       new HtmlElement({
         type: "p",
-        innerText: `H: ${Math.round(parsedWeatherData.max)}`,
+        innerText: `H: ${Math.round(parsedWeatherData.max)}°`,
       })
     );
 

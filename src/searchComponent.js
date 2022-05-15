@@ -4,7 +4,7 @@ import { errorMessage } from "./errorMessage.js";
 import { CurrentWeatherCard } from "./weatherCardComponents/CurrentWeatherCard.js";
 import { forecastLoader } from "./weatherCardComponents/forecastLoader.js";
 import weather from "./weather.js";
-
+import { hourlyForecastLoader } from "./hourlyWeatherComponents/hourlyForecastLoader.js";
 export function searchComponent(rootNode) {
   /**
    * Store reference to the error message (when a user types in an invalid city)
@@ -18,7 +18,8 @@ export function searchComponent(rootNode) {
    */
   let _currentWeatherCard;
 
-  const forecast = forecastLoader();
+  const sevenDayForecast = forecastLoader();
+  const hourlyForecast = hourlyForecastLoader();
 
   const _componentContainer = new HtmlElement({
     type: "div",
@@ -68,11 +69,11 @@ export function searchComponent(rootNode) {
     //Remove any previous error messages
     if (_errorMessageComponent) _errorMessageComponent.remove();
     if (_currentWeatherCard) _currentWeatherCard.remove();
-    forecast.removeForecasts();
+    sevenDayForecast.removeForecasts();
+    hourlyForecast.removeForecasts();
 
     try {
       const weatherData = await weather.getWeather(e.target.value);
-
       const todaysWeather = new CurrentWeatherCard(
         weatherData,
         rootNode,
@@ -80,11 +81,12 @@ export function searchComponent(rootNode) {
       );
       _currentWeatherCard = todaysWeather.container;
 
-      await forecast.loadForecast(weatherData);
-      todaysWeather.render();
+      await sevenDayForecast.loadForecast(weatherData);
+      await hourlyForecast.loadForecast(weatherData);
 
-      // todaysWeather.render();
-      forecast.renderForecast(rootNode);
+      todaysWeather.render();
+      hourlyForecast.renderForecast(rootNode);
+      sevenDayForecast.renderForecast(rootNode);
     } catch (error) {
       console.log(error);
       _errorMessageComponent = errorMessage(error);
