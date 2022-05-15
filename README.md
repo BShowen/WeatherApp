@@ -1,6 +1,6 @@
 # WeatherApp
-A simple web app that uses the OpenWeather API to fetch weather data for a specific city. 
+##### A simple web app that uses the [OpenWeatherMap API](https://openweathermap.org/api) to fetch weather data for a specific city. 
 
-This app has zero dependencies and is written with vanilla JS.
+##### This app has zero dependencies and is written with vanilla JS.
 
-View this app live [here](https://bshowen.github.io/WeatherApp/)
+##### View this app live [here](https://bshowen.github.io/WeatherApp/).
