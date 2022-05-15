@@ -1,11 +1,16 @@
 import { HtmlElement } from "../HtmlElement";
+import { tempToColor } from "../tempToColor";
 
 export function CurrentWeatherCard(weatherData = {}, rootNode, cityName) {
   // Process the weatherData upon instantiation
   const parsedWeatherData = (function () {
-    const { max, min } = weatherData.daily[0].temp;
-    const { temp } = weatherData.current;
-    const { description } = weatherData.current.weather[0];
+    let { max, min } = weatherData.daily[0].temp;
+    let { temp } = weatherData.current;
+    let { description } = weatherData.current.weather[0];
+    description = description.charAt(0).toUpperCase() + description.slice(1);
+    temp = Math.round(temp);
+    max = Math.round(max);
+    min = Math.round(min);
     return {
       temp,
       description,
@@ -30,7 +35,6 @@ export function CurrentWeatherCard(weatherData = {}, rootNode, cityName) {
       "current-weather-card",
       "flex",
       "flex-column",
-      "flex-justify-center",
       "flex-align-center",
     ],
   });
@@ -69,10 +73,10 @@ export function CurrentWeatherCard(weatherData = {}, rootNode, cityName) {
     });
 
     const _text = new HtmlElement({
-      type: "h1",
-      classList: ["m-0"],
+      type: "p",
+      classList: ["m-0", tempToColor(parsedWeatherData.temp)],
       id: "main-temp",
-      innerText: `${Math.round(parsedWeatherData.temp)}°`,
+      innerText: `${parsedWeatherData.temp}°`,
     });
 
     container.appendChild(_text);
@@ -82,6 +86,7 @@ export function CurrentWeatherCard(weatherData = {}, rootNode, cityName) {
   const _description = (function () {
     const container = new HtmlElement({
       type: "div",
+      id: "current-weather-card-description-container",
       classList: [
         "flex",
         "flex-row",
@@ -91,7 +96,7 @@ export function CurrentWeatherCard(weatherData = {}, rootNode, cityName) {
     });
 
     const _text = new HtmlElement({
-      type: "h5",
+      type: "p",
       classList: ["m-0"],
       innerText: parsedWeatherData.description,
     });
@@ -104,6 +109,7 @@ export function CurrentWeatherCard(weatherData = {}, rootNode, cityName) {
   const _dailyTemps = (function () {
     const container = new HtmlElement({
       type: "div",
+      id: "current-weather-card-temps-container",
       classList: [
         "flex",
         "flex-row",
@@ -113,19 +119,19 @@ export function CurrentWeatherCard(weatherData = {}, rootNode, cityName) {
     });
 
     const _highTemp = new HtmlElement({
-      type: "h5",
-      classList: ["m-0", "mr-5"],
-      innerText: `H:${Math.round(parsedWeatherData.max)}°`,
+      type: "p",
+      classList: ["m-0", "mr-5", tempToColor(parsedWeatherData.max)],
+      innerText: `H:${parsedWeatherData.max}°`,
     });
 
     const _lowTemp = new HtmlElement({
-      type: "h5",
-      classList: ["m-0", "ml-5"],
-      innerText: `L:${Math.round(parsedWeatherData.min)}°`,
+      type: "p",
+      classList: ["m-0", "ml-5", tempToColor(parsedWeatherData.min)],
+      innerText: `L:${parsedWeatherData.min}°`,
     });
 
-    container.appendChild(_highTemp);
     container.appendChild(_lowTemp);
+    container.appendChild(_highTemp);
 
     return container;
   })();

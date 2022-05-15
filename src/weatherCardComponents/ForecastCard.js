@@ -1,6 +1,7 @@
 import { HtmlElement } from "../HtmlElement";
 import weather from "../weather.js";
 import { loadImage } from "../loadImage";
+import { tempToColor } from "../tempToColor";
 
 export function ForecastCard(weatherData = {}) {
   // The weather image.
@@ -8,15 +9,18 @@ export function ForecastCard(weatherData = {}) {
 
   // Process the weatherData upon instantiation
   const parsedWeatherData = (function () {
-    const { max, min } = weatherData.temp;
-    const { dt, pop } = weatherData;
-    const formatter = new Intl.DateTimeFormat([], { weekday: "short" });
-    const dateTime = formatter.format(
+    let { max, min } = weatherData.temp;
+    let { dt, pop } = weatherData;
+    const { icon } = weatherData.weather[0];
+
+    dt = new Intl.DateTimeFormat([], { weekday: "short" }).format(
       new Date(Number.parseInt(dt.toString() + "000"))
     );
-    const { icon } = weatherData.weather[0];
+    pop = Math.floor(pop * 100);
+    min = Math.round(min);
+    max = Math.round(max);
     return {
-      dateTime,
+      dt,
       max,
       min,
       pop,
@@ -54,27 +58,30 @@ export function ForecastCard(weatherData = {}) {
   const render = function (parentNode) {
     container.appendChild(
       new HtmlElement({
-        type: "h5",
-        innerText: parsedWeatherData.dateTime,
+        type: "p",
+        classList: ["weekday"],
+        innerText: parsedWeatherData.dt,
       })
     );
     container.appendChild(image);
     container.appendChild(
       new HtmlElement({
         typ: "p",
-        innerText: `${Math.floor(parsedWeatherData.pop * 100)}% rain`,
+        innerText: `${parsedWeatherData.pop}% rain`,
       })
     );
     container.appendChild(
       new HtmlElement({
+        classList: ["low-temp", tempToColor(parsedWeatherData.min)],
         type: "p",
-        innerText: `L: ${Math.round(parsedWeatherData.min)}°`,
+        innerText: `L: ${parsedWeatherData.min}°`,
       })
     );
     container.appendChild(
       new HtmlElement({
+        classList: ["high-temp", tempToColor(parsedWeatherData.max)],
         type: "p",
-        innerText: `H: ${Math.round(parsedWeatherData.max)}°`,
+        innerText: `H: ${parsedWeatherData.max}°`,
       })
     );
 

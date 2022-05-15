@@ -1,6 +1,7 @@
 import { HtmlElement } from "../HtmlElement";
 import weather from "../weather.js";
 import { loadImage } from "../loadImage";
+import { tempToColor } from "../tempToColor.js";
 
 export function HourlyForecastCard(weatherData) {
   let image;
@@ -54,6 +55,7 @@ export function HourlyForecastCard(weatherData) {
     _container.appendChild(
       new HtmlElement({
         type: "p",
+        classList: ["time"],
         innerText: `${_parsedWeatherData.time}`,
       })
     );
@@ -70,6 +72,7 @@ export function HourlyForecastCard(weatherData) {
     _container.appendChild(
       new HtmlElement({
         type: "p",
+        classList: [tempToColor(_parsedWeatherData.temp)],
         innerText: `${_parsedWeatherData.temp}°`,
       })
     );

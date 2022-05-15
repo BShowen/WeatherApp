@@ -37,7 +37,7 @@ export function searchComponent(rootNode) {
     type: "input",
     attributes: {
       type: "text",
-      placeholder: "Enter a city name",
+      // placeholder: "Enter a city name",
       style: "width: 90%",
     },
     id: "cityName",
@@ -91,6 +91,7 @@ export function searchComponent(rootNode) {
       console.log(error);
       _errorMessageComponent = errorMessage(error);
       rootNode.appendChild(_errorMessageComponent);
+      _focus();
     }
   };
 
