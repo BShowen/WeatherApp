@@ -1,5 +1,5 @@
 import { ForecastCard } from "./ForecastCard.js";
-import { HtmlElement } from "../HtmlElement.js";
+import { HtmlElement } from "../HelperFunctions/HtmlElement.js";
 
 /**
  * This component loads the seven day forecast.

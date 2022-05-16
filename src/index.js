@@ -10,10 +10,10 @@ import "./Skeleton/css/skeleton.css";
  */
 import "./index.css";
 
-import { searchComponent } from "./searchComponent.js";
+import { searchBar } from "./SearchBar/searchBar.js";
 
 (function () {
   const rootNode = document.querySelector("#root");
-  const searchBar = searchComponent(rootNode);
-  searchBar.render();
+  const searchBarComponent = searchBar(rootNode);
+  searchBarComponent.render();
 })();

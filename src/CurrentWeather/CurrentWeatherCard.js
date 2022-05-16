@@ -1,5 +1,5 @@
-import { HtmlElement } from "../HtmlElement";
-import { tempToColor } from "../tempToColor";
+import { HtmlElement } from "../HelperFunctions/HtmlElement";
+import { tempToColor } from "../HelperFunctions/tempToColor";
 
 export function CurrentWeatherCard(weatherData = {}, rootNode, cityName) {
   // Process the weatherData upon instantiation

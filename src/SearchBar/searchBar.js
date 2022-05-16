@@ -1,12 +1,12 @@
 // The module for creating Skeleton js components.
-import { HtmlElement } from "./HtmlElement.js";
-import { errorMessage } from "./errorMessage.js";
-import { CurrentWeatherCard } from "./weatherCardComponents/CurrentWeatherCard.js";
-import { forecastLoader } from "./weatherCardComponents/forecastLoader.js";
-import weather from "./weather.js";
-import { hourlyForecastLoader } from "./hourlyWeatherComponents/hourlyForecastLoader.js";
-import { spinner } from "./Spinner/spinner.js";
-export function searchComponent(rootNode) {
+import { HtmlElement } from "../HelperFunctions/HtmlElement.js";
+import { errorMessage } from "../HelperFunctions/errorMessage.js";
+import { CurrentWeatherCard } from "../CurrentWeather/CurrentWeatherCard.js";
+import { forecastLoader } from "../SevenDayForecast/forecastLoader.js";
+import weather from "../weather.js";
+import { hourlyForecastLoader } from "../HourlyForecast/hourlyForecastLoader.js";
+import { spinner } from "../Spinner/spinner.js";
+export function searchBar(rootNode) {
   /**
    * Store reference to the error message (when a user types in an invalid city)
    * So we can remove this error message when the user creates a new search

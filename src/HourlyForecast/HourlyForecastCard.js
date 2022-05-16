@@ -1,7 +1,7 @@
-import { HtmlElement } from "../HtmlElement";
+import { HtmlElement } from "../HelperFunctions/HtmlElement";
 import weather from "../weather.js";
-import { loadImage } from "../loadImage";
-import { tempToColor } from "../tempToColor.js";
+import { loadImage } from "../HelperFunctions/loadImage";
+import { tempToColor } from "../HelperFunctions/tempToColor.js";
 
 export function HourlyForecastCard(weatherData) {
   let image;

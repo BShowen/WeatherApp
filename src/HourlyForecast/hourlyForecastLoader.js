@@ -1,5 +1,5 @@
 import { HourlyForecastCard } from "./HourlyForecastCard";
-import { HtmlElement } from "../HtmlElement";
+import { HtmlElement } from "../HelperFunctions/HtmlElement";
 
 export function hourlyForecastLoader() {
   // Store each forecast card in this array for future iteration.

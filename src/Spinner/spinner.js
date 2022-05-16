@@ -1,4 +1,4 @@
-import { HtmlElement } from "../HtmlElement";
+import { HtmlElement } from "../HelperFunctions/HtmlElement";
 import "./spinner.css";
 
 export function spinner() {
