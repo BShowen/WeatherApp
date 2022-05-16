@@ -1,4 +1,15 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100vw;
+  height: 100%;
+}
+
 #root{
+  min-width: 100%;
+  min-height: 100%;
   /* padding-top: 50px; */
   margin-top: 50px;
   --main-bg-color: #F8FFE5;
@@ -101,6 +112,7 @@
 
   .container{
     width: 100%;
+    height: 100%;
     padding: 8px;
   }
 

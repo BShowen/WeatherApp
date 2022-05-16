@@ -5,6 +5,7 @@ import { CurrentWeatherCard } from "./weatherCardComponents/CurrentWeatherCard.j
 import { forecastLoader } from "./weatherCardComponents/forecastLoader.js";
 import weather from "./weather.js";
 import { hourlyForecastLoader } from "./hourlyWeatherComponents/hourlyForecastLoader.js";
+import { spinner } from "./Spinner/spinner.js";
 export function searchComponent(rootNode) {
   /**
    * Store reference to the error message (when a user types in an invalid city)
@@ -72,6 +73,9 @@ export function searchComponent(rootNode) {
     sevenDayForecast.removeForecasts();
     hourlyForecast.removeForecasts();
 
+    const loadingSpinner = spinner(rootNode);
+    loadingSpinner.start();
+    // return;
     try {
       const weatherData = await weather.getWeather(e.target.value);
       const todaysWeather = new CurrentWeatherCard(
@@ -84,10 +88,12 @@ export function searchComponent(rootNode) {
       await sevenDayForecast.loadForecast(weatherData);
       await hourlyForecast.loadForecast(weatherData);
 
+      loadingSpinner.stop();
       todaysWeather.render();
       hourlyForecast.renderForecast(rootNode);
       sevenDayForecast.renderForecast(rootNode);
     } catch (error) {
+      loadingSpinner.stop();
       console.log(error);
       _errorMessageComponent = errorMessage(error);
       rootNode.appendChild(_errorMessageComponent);
