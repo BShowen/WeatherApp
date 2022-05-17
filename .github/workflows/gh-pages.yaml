@@ -19,9 +19,11 @@ jobs:
       - name: Move files
         run: |
           cd ../ 
-          echo "Showing dir"
+          echo "running pwd"
           pwd
+          echo "running ls"
           ls
+          echo "running ls/weatherApp"
           # mv dist/index.html ./index.html
           # mv dist/main.js ./main.js
 
