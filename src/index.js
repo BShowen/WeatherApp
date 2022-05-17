@@ -16,7 +16,7 @@ import { ErrorMessage } from "./HelperFunctions/ErrorMessage";
 import weather from "./weather";
 import { CurrentWeatherCard } from "./CurrentWeather/CurrentWeatherCard";
 import { sevenDayForecast } from "./SevenDayForecast/sevenDayForecast";
-import { hourlyForecast } from "./hourlyForecast/hourlyForecast";
+import { hourlyForecast } from "./HourlyForecast/hourlyForecast";
 
 (function () {
   const rootNode = document.querySelector("#root");

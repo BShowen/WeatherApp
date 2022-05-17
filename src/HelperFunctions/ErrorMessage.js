@@ -1,4 +1,4 @@
-import { HtmlElement } from "./HtmlElement.js";
+import { HtmlElement } from "./HtmlElement";
 
 export function ErrorMessage(rootNode) {
   const _rowContainer = new HtmlElement({
