@@ -12,7 +12,7 @@ import "./index.css";
 
 import { searchBar } from "./SearchBar/searchBar.js";
 import { spinner } from "./Spinner/spinner";
-import { ErrorMessage } from "./HelperFunctions/ErrorMessage.js";
+import { ErrorMessage } from "./HelperFunctions/ErrorMessage";
 import weather from "./weather";
 import { CurrentWeatherCard } from "./CurrentWeather/CurrentWeatherCard";
 import { sevenDayForecast } from "./SevenDayForecast/sevenDayForecast";
