@@ -30,7 +30,7 @@ export default (function () {
       const { lat, lon } = data[0];
       return { lat, lon };
     } else {
-      return Promise.reject(`No data for ${cityName}`);
+      throw new InvalidSearchError(`No data for ${cityName}`);
     }
   }
 
@@ -52,7 +52,7 @@ export default (function () {
       const response = await fetch(apiUrl);
       data = await response.json();
     } catch (error) {
-      return Promise.reject(error);
+      throw error;
     }
     return data;
   }
@@ -71,3 +71,10 @@ export default (function () {
 
   return { getWeather, getIconSrc };
 })();
+
+class InvalidSearchError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "InvalidSearchError";
+  }
+}

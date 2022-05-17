@@ -136,7 +136,7 @@ export function CurrentWeatherCard(weatherData = {}, rootNode, cityName) {
     return container;
   })();
 
-  const render = async function () {
+  const render = function () {
     _skeletonRow.appendChild(_skeletonColumn);
     _skeletonColumn.appendChild(_container);
     _container.appendChild(_title);
@@ -147,5 +147,9 @@ export function CurrentWeatherCard(weatherData = {}, rootNode, cityName) {
     rootNode.appendChild(_skeletonRow);
   };
 
-  return { container: _skeletonRow, render };
+  const remove = function () {
+    _skeletonRow.remove();
+  };
+
+  return { render, remove };
 }

@@ -1,18 +1,16 @@
-import { HourlyForecastCard } from "./HourlyForecastCard";
-import { HtmlElement } from "../HelperFunctions/HtmlElement";
+import { ForecastCard } from "./ForecastCard.js";
+import { HtmlElement } from "../HelperFunctions/HtmlElement.js";
 
-export function hourlyForecastLoader() {
+/**
+ * This component loads the seven day forecast.
+ */
+export function sevenDayForecast(rootNode) {
   // Store each forecast card in this array for future iteration.
-  let hourlyForecasts = [];
+  let dailyForecasts = [];
 
-  let _hourlyForecastContainer = new HtmlElement({
+  let _forecastContainer = new HtmlElement({
     type: "div",
-    classList: [
-      "hourly-forecast-container",
-      "flex",
-      "flex-row",
-      "flex-no-wrap",
-    ],
+    classList: ["forecast-container"],
   });
 
   /**
@@ -23,33 +21,29 @@ export function hourlyForecastLoader() {
    * the OpenWeather API. If an image cannot be retrieved then we simply return
    * a resolved promise and there is no image to display for that forecast card.
    */
-  const loadForecast = async function (weatherData) {
-    const hourlyForecastData = weatherData.hourly.splice(23);
-
-    hourlyForecastData.forEach((hour, index) => {
-      const weatherCard = new HourlyForecastCard(hour);
-      hourlyForecasts.push(weatherCard);
+  const loadForecast = async function (weatherData = {}) {
+    weatherData.daily.forEach((day) => {
+      dailyForecasts.push(new ForecastCard(day));
     });
+
     /**
-     * I want forecast.load() to be called in parallel for all of the
-     * forecasts. I use map to map over the hourlyForecasts and call .load() on
+     * I want forecast.load() to be called in parallel for all 7 of the
+     * forecasts. I use map to map over the dailyForecasts and call .load() on
      * each forecast. .load() will fetch an image from OpenWeather API. This
      * is slow, and I dont want to render text on the screen AND THEN images
      * after a slight delay. So I use Promise.all() to make sure all images
      * have been fetched and loaded before proceeding with rendering.
      */
-    await Promise.all(hourlyForecasts.map((forecast) => forecast.load()));
+    await Promise.all(dailyForecasts.map((forecast) => forecast.load()));
     return true;
   };
 
   /**
    * This function renders each forecast card to the dom.
    */
-  const renderForecast = function (rootNode) {
-    hourlyForecasts.forEach((forecast) =>
-      forecast.render(_hourlyForecastContainer)
-    );
-    rootNode.appendChild(_hourlyForecastContainer);
+  const renderForecast = function () {
+    dailyForecasts.forEach((forecast) => forecast.render(_forecastContainer));
+    rootNode.appendChild(_forecastContainer);
   };
 
   /**
@@ -57,17 +51,12 @@ export function hourlyForecastLoader() {
    * when users make subsequent requests, the previous results are removed.
    */
   const removeForecasts = function () {
-    _hourlyForecastContainer.remove();
-    _hourlyForecastContainer = new HtmlElement({
+    _forecastContainer.remove();
+    _forecastContainer = new HtmlElement({
       type: "div",
-      classList: [
-        "hourly-forecast-container",
-        "flex",
-        "flex-row",
-        "flex-no-wrap",
-      ],
+      classList: ["forecast-container"],
     });
-    hourlyForecasts = [];
+    dailyForecasts = [];
   };
 
   return { loadForecast, renderForecast, removeForecasts };

@@ -1,7 +1,7 @@
 import { HtmlElement } from "./HtmlElement.js";
 
-export function errorMessage(errorMessage) {
-  const rowContainer = new HtmlElement({
+export function ErrorMessage(rootNode) {
+  const _rowContainer = new HtmlElement({
     type: "div",
     classList: ["row"],
   });
@@ -19,11 +19,23 @@ export function errorMessage(errorMessage) {
 
   const textComponent = new HtmlElement({
     type: "h5",
-    innerText: errorMessage,
   });
 
-  rowContainer.appendChild(_columnContainer);
-  _columnContainer.appendChild(textComponent);
+  const setErrorMessage = function (newErrorMessage) {
+    textComponent.innerText = newErrorMessage;
+    return this;
+    //Return 'this' so that render() can be chained to this method.
+  };
 
-  return rowContainer;
+  const render = function () {
+    _rowContainer.appendChild(_columnContainer);
+    _columnContainer.appendChild(textComponent);
+    rootNode.appendChild(_rowContainer);
+  };
+
+  const remove = function () {
+    _rowContainer.remove();
+  };
+
+  return { render, setErrorMessage, remove };
 }
