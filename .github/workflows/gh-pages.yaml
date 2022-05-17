@@ -16,6 +16,14 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Move files
+        run: |
+          cd ../ 
+          echo "Showing dir"
+          pwd
+          # mv dist/index.html ./index.html
+          # mv dist/main.js ./main.js
+
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4.3.3
         with:
