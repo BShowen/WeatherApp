@@ -20,6 +20,15 @@ jobs:
         run: |
           mv dist/index.html ./
           mv dist/main.js ./
+      
+      - name: Cleanup directory
+        run: | 
+          rm -rf src
+          rm .eslintrc.js
+          rm .gitignore
+          rm package-lock.json
+          rm package.json
+          rm webpack.config.js
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4.3.3
