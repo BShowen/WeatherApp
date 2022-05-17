@@ -18,8 +18,8 @@ jobs:
 
       - name: Move files
         run: |
-          mv WeatherApp/dist/index.html WeatherApp
-          mv WeatherApp/dist/main.js WeatherApp
+          mv WeatherApp/WeatherApp/dist/index.html WeatherApp/WeatherApp
+          mv WeatherApp/WeatherApp/dist/main.js WeatherApp/WeatherApp
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4.3.3
