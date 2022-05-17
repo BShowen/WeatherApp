@@ -18,12 +18,8 @@ jobs:
 
       - name: Move files
         run: |
-          echo "running ls"
-          ls
-          echo "running ls/WeatherApp"
-          ls WeatherApp
-          # mv WeatherApp/WeatherApp/dist/index.html WeatherApp/WeatherApp
-          # mv WeatherApp/WeatherApp/dist/main.js WeatherApp/WeatherApp
+          mv dist/index.html ./
+          mv dist/main.js ./
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4.3.3
