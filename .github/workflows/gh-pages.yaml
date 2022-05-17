@@ -24,7 +24,9 @@ jobs:
       - name: Cleanup directory
         run: | 
           rm -rf src
+          rm -rf node_modules
           rm .eslintrc.js
+          rm .gitignore
           rm package-lock.json
           rm package.json
           rm webpack.config.js
