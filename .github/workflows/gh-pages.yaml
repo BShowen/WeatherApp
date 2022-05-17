@@ -23,7 +23,8 @@ jobs:
           pwd
           echo "running ls"
           ls
-          echo "running ls/weatherApp"
+          echo "running ls/WeatherApp"
+          ls WeatherApp
           # mv dist/index.html ./index.html
           # mv dist/main.js ./main.js
 
