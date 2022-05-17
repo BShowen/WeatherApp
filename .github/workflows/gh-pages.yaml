@@ -21,6 +21,7 @@ jobs:
           cd ../ 
           echo "Showing dir"
           pwd
+          ls
           # mv dist/index.html ./index.html
           # mv dist/main.js ./main.js
 
