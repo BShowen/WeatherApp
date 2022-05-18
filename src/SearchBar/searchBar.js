@@ -1,6 +1,7 @@
+import "./style.css";
 import { HtmlElement } from "../HelperFunctions/HtmlElement.js";
 export function searchBar(rootNode, callBack) {
-  const _componentContainer = new HtmlElement({
+  const container = new HtmlElement({
     type: "div",
     classList: [
       "row",
@@ -17,14 +18,9 @@ export function searchBar(rootNode, callBack) {
     attributes: {
       type: "text",
       placeholder: "Enter a city name",
-      style: "width: 90%",
     },
     id: "cityName",
   });
-
-  const _focus = function () {
-    _searchBar.focus();
-  };
 
   /**
    * Listen for when the user presses the Enter key.
@@ -35,7 +31,14 @@ export function searchBar(rootNode, callBack) {
   const _handleKeydown = async function (e) {
     if (!(e.key == "Enter" && e.target.value.trim().length > 0)) return;
     if (screen.width < 500) _searchBar.blur();
-    callBack(e.target.value.trim());
+    callBack(e.target.value.trim()).then(
+      () => {
+        container.classList.add("showing-results");
+      },
+      () => {
+        container.classList.remove("showing-results");
+      }
+    );
   };
 
   const render = function () {
@@ -45,10 +48,17 @@ export function searchBar(rootNode, callBack) {
       e.target.value = "";
     });
 
-    _componentContainer.appendChild(_searchBar);
-    rootNode.appendChild(_componentContainer);
-    _focus();
+    container.appendChild(_searchBar);
+    rootNode.appendChild(container);
   };
 
-  return { render };
+  const setValue = function (newValue) {
+    _searchBar.value = newValue;
+  };
+
+  const reset = function () {
+    container.classList.remove("showing-results");
+  };
+
+  return { render, container, reset, setValue };
 }

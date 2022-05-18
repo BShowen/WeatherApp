@@ -14,11 +14,13 @@ export function ErrorMessage(rootNode) {
       "flex",
       "flex-justify-center",
       "flex-align-center",
+      "error-message-container",
     ],
   });
 
   const textComponent = new HtmlElement({
     type: "h5",
+    id: "error-message-text",
   });
 
   const setErrorMessage = function (newErrorMessage) {

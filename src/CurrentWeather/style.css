@@ -1,0 +1,89 @@
+/* Larger than mobile */
+@media (min-width: 350px) {
+  #current-weather-card-container {
+    min-width: 100%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding-bottom: 10px;
+  }
+
+  
+  #current-weather-image-container {
+    width: 100%;
+    height: 100px;
+    overflow: hidden;
+  }
+
+  #current-weather-image-container > img{
+    display: block;
+    margin: 0 auto;
+    height: 150px;
+    position: relative;
+    top: -25px;
+  }
+
+  .current-weather-card {
+    /* Position children */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+
+
+    max-width: 95%;
+    min-width: 95%;
+    width: 100%;
+    padding: 10px;
+    border-bottom-left-radius: 7rem;
+    border-bottom-right-radius: 7rem;
+    height: 0;
+    overflow: hidden;
+
+    -webkit-box-shadow: 0px 0px 48px 0px rgba(20,127,234,0.62); 
+    box-shadow: 0px 0px 48px 0px rgba(20,127,234,0.62);
+    
+    /* animation */
+    animation-duration: 250ms;
+    animation-fill-mode: forwards;
+    animation-name: slideDown; 
+
+    /* Search bar has z-index:2 in order to be on top of the current-
+    weather-card, because current-weather-card has a border-shadow that needs 
+    to be behind the search bar otherwise the gradient background will not 
+    look right */
+    z-index: 1;
+  }
+
+  @keyframes slideDown {
+    from {
+      height: 0;
+      background-image: linear-gradient(#47BEF5, #0F62E4);
+    }
+  
+    to {
+      height: 100%;
+      background-image: linear-gradient(#47BEF5, #0F62E4);
+    }
+  }
+
+  .current-weather-card > div > p {
+    font-weight: bolder;
+    font-size: 3rem;
+    color: white;
+    text-align: center
+  }
+
+  .current-weather-card > div#date-string > p{
+    font-size: 1.5rem;
+    color: #5BB8FF;
+  }
+
+  #current-weather-card-temps-container {
+    width: 100%;
+    justify-content: center;
+    gap: 20px;
+  }
+}

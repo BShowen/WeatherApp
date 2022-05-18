@@ -10,12 +10,17 @@ import "./Skeleton/css/skeleton.css";
  */
 import "./index.css";
 
+/**
+ * Use bootstrap icons
+ */
+import "bootstrap-icons/font/bootstrap-icons.css";
+
 import { searchBar } from "./SearchBar/searchBar.js";
 import { spinner } from "./Spinner/spinner";
 import { ErrorMessage } from "./HelperFunctions/ErrorMessage";
 import weather from "./weather";
 import { CurrentWeatherCard } from "./CurrentWeather/CurrentWeatherCard";
-import { sevenDayForecast } from "./SevenDayForecast/sevenDayForecast";
+// import { sevenDayForecast } from "./SevenDayForecast/sevenDayForecast";
 import { hourlyForecast } from "./HourlyForecast/hourlyForecast";
 
 (function () {
@@ -23,9 +28,10 @@ import { hourlyForecast } from "./HourlyForecast/hourlyForecast";
   const spinningLoader = spinner();
   const errorMessageComponent = new ErrorMessage(rootNode);
   let currentWeatherCard;
-  let sevenDayForecastLoader = sevenDayForecast(rootNode);
+  // let sevenDayForecastLoader = sevenDayForecast(rootNode);
   let hourlyForecastLoader = hourlyForecast(rootNode);
-  searchBar(rootNode, loadResults).render();
+  const searchBarComponent = searchBar(rootNode, loadResults);
+  searchBarComponent.render();
 
   /**
    * This is the function that gets fired when the user searches in the search
@@ -38,9 +44,15 @@ import { hourlyForecast } from "./HourlyForecast/hourlyForecast";
     clearPreviousSearchResults();
     try {
       weatherData = await weather.getWeather(cityName);
+      const cityAndState = weatherData.state
+        ? `${weatherData.name}, ${weatherData.state}`
+        : weatherData.name;
+      searchBarComponent.setValue(cityAndState);
+      loadCurrentWeather(weatherData, cityName);
       await Promise.all([
+        currentWeatherCard.load(),
         hourlyForecastLoader.loadForecast(weatherData),
-        sevenDayForecastLoader.loadForecast(weatherData),
+        // sevenDayForecastLoader.loadForecast(weatherData),
       ]);
     } catch (error) {
       if (error.name == "InvalidSearchError") {
@@ -49,25 +61,30 @@ import { hourlyForecast } from "./HourlyForecast/hourlyForecast";
       } else {
         throw error;
       }
-      return;
+      return Promise.reject();
     }
 
-    loadCurrentWeather(weatherData, cityName);
+    currentWeatherCard.render();
     hourlyForecastLoader.renderForecast();
-    sevenDayForecastLoader.renderForecast();
+    // sevenDayForecastLoader.renderForecast();
     spinningLoader.stop();
+    return Promise.resolve();
   }
 
   /**
    * Load the current weather card. This is the top most component in the DOM.
    */
   function loadCurrentWeather(weatherData, cityName) {
-    currentWeatherCard = new CurrentWeatherCard(
-      weatherData,
-      rootNode,
-      cityName
-    );
-    currentWeatherCard.render();
+    try {
+      currentWeatherCard = new CurrentWeatherCard(
+        weatherData,
+        rootNode,
+        cityName
+      );
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
   }
 
   /**
@@ -76,7 +93,8 @@ import { hourlyForecast } from "./HourlyForecast/hourlyForecast";
   function clearPreviousSearchResults() {
     errorMessageComponent.remove();
     if (currentWeatherCard) currentWeatherCard.remove();
-    sevenDayForecastLoader.removeForecasts();
+    // sevenDayForecastLoader.removeForecasts();
     hourlyForecastLoader.removeForecasts();
+    searchBarComponent.reset();
   }
 })();

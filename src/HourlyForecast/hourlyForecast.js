@@ -1,3 +1,4 @@
+import "./style.css";
 import { HourlyForecastCard } from "./HourlyForecastCard";
 import { HtmlElement } from "../HelperFunctions/HtmlElement";
 
@@ -7,13 +8,58 @@ export function hourlyForecast(rootNode) {
 
   let _hourlyForecastContainer = new HtmlElement({
     type: "div",
-    classList: [
-      "hourly-forecast-container",
-      "flex",
-      "flex-row",
-      "flex-no-wrap",
-    ],
+    classList: ["hourly-forecast-container"],
   });
+
+  let _header = function () {
+    const _container = new HtmlElement({
+      type: "div",
+      id: "hourly-forecast-header-container",
+    });
+
+    const _headerTitle = (function () {
+      const _container = new HtmlElement({
+        type: "div",
+        id: "hourly-forecast-header-title-container",
+      });
+      const _text = new HtmlElement({
+        type: "p",
+        id: "hourly-forecast-title-text",
+        innerText: "Today",
+      });
+      _container.appendChild(_text);
+      return _container;
+    })();
+
+    const _sevenDayForecastButton = (function () {
+      const _container = new HtmlElement({
+        type: "div",
+        id: "hourly-forecast-header-button-container",
+      });
+
+      const _btn = new HtmlElement({
+        type: "button",
+        innerText: "7 days >",
+        id: "hourly-forecast-header-button",
+      });
+
+      _container.appendChild(_btn);
+      return _container;
+    })();
+
+    _container.appendChild(_headerTitle);
+    _container.appendChild(_sevenDayForecastButton);
+    return _container;
+  };
+
+  let _body = (function () {
+    const _container = new HtmlElement({
+      type: "div",
+      id: "hourly-forecast-body-container",
+    });
+
+    return _container;
+  })();
 
   /**
    * Initialize each forecast card by creating an instance of ForecastCard and
@@ -24,12 +70,13 @@ export function hourlyForecast(rootNode) {
    * a resolved promise and there is no image to display for that forecast card.
    */
   const loadForecast = async function (weatherData) {
-    const hourlyForecastData = weatherData.hourly.splice(23);
+    // Show hourly weather data for the next 24 hours only.
+    const hourlyForecastData = weatherData.hourly.splice(0, 25);
 
-    hourlyForecastData.forEach((hour, index) => {
-      const weatherCard = new HourlyForecastCard(hour);
-      hourlyForecasts.push(weatherCard);
+    hourlyForecastData.forEach((hourlyForecast) => {
+      hourlyForecasts.push(new HourlyForecastCard(hourlyForecast));
     });
+
     /**
      * I want forecast.load() to be called in parallel for all of the
      * forecasts. I use map to map over the hourlyForecasts and call .load() on
@@ -38,17 +85,26 @@ export function hourlyForecast(rootNode) {
      * after a slight delay. So I use Promise.all() to make sure all images
      * have been fetched and loaded before proceeding with rendering.
      */
-    await Promise.all(hourlyForecasts.map((forecast) => forecast.load()));
-    return true;
+    await Promise.all(
+      hourlyForecasts.map((forecastCard) => forecastCard.load())
+    );
+
+    /**
+     * Ensure a resolved promise is always returned. If there is an error in
+     * Promise.all() then we consume it. The only error would be when the
+     * OpenWeatherMap API is unable to respond with an image. In this case we
+     * still want to render the forecastCard, except that it wont have an image.
+     */
+    return Promise.resolve(true);
   };
 
   /**
    * This function renders each forecast card to the dom.
    */
   const renderForecast = function () {
-    hourlyForecasts.forEach((forecast) =>
-      forecast.render(_hourlyForecastContainer)
-    );
+    hourlyForecasts.forEach((forecastCard) => forecastCard.render(_body));
+    _hourlyForecastContainer.appendChild(_header());
+    _hourlyForecastContainer.appendChild(_body);
     rootNode.appendChild(_hourlyForecastContainer);
   };
 
@@ -57,15 +113,8 @@ export function hourlyForecast(rootNode) {
    * when users make subsequent requests, the previous results are removed.
    */
   const removeForecasts = function () {
-    _hourlyForecastContainer.remove();
-    _hourlyForecastContainer = new HtmlElement({
-      type: "div",
-      classList: [
-        "hourly-forecast-container",
-        "flex",
-        "flex-row",
-        "flex-no-wrap",
-      ],
+    [_hourlyForecastContainer, _header, _body].map((element) => {
+      element.innerHTML = "";
     });
     hourlyForecasts = [];
   };

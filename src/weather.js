@@ -27,8 +27,8 @@ export default (function () {
     }
 
     if (data.length > 0) {
-      const { lat, lon } = data[0];
-      return { lat, lon };
+      const { lat, lon, state, name } = data[0];
+      return { lat, lon, state, name };
     } else {
       throw new InvalidSearchError(`No data for ${cityName}`);
     }
@@ -42,7 +42,7 @@ export default (function () {
     let data;
 
     try {
-      const { lat, lon } = await _getCoords(cityName);
+      const { lat, lon, state, name } = await _getCoords(cityName);
       const apiUrl =
         "https://api.openweathermap.org/data/2.5/onecall" +
         `?lat=${lat}&lon=${lon}&exclude=minutely` +
@@ -51,6 +51,8 @@ export default (function () {
 
       const response = await fetch(apiUrl);
       data = await response.json();
+      data.state = state;
+      data.name = name;
     } catch (error) {
       throw error;
     }

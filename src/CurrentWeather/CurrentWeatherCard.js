@@ -1,65 +1,45 @@
+import "./style.css";
 import { HtmlElement } from "../HelperFunctions/HtmlElement";
-import { tempToColor } from "../HelperFunctions/tempToColor";
+import { loadImage } from "../HelperFunctions/loadImage";
+import { currentWeatherInfo } from "./currentWeatherInfo";
+import weather from "../weather.js";
 
 export function CurrentWeatherCard(weatherData = {}, rootNode, cityName) {
   // Process the weatherData upon instantiation
   const parsedWeatherData = (function () {
-    let { max, min } = weatherData.daily[0].temp;
-    let { temp } = weatherData.current;
-    let { description } = weatherData.current.weather[0];
-    description = description.charAt(0).toUpperCase() + description.slice(1);
+    let { temp, dt, wind_speed, humidity } = weatherData.current;
+    let { description, icon } = weatherData.current.weather[0];
+    let { pop } = weatherData.hourly[0];
+    pop = Math.round(pop * 100);
+    wind_speed = Math.round(wind_speed);
     temp = Math.round(temp);
-    max = Math.round(max);
-    min = Math.round(min);
+    dt *= 1000;
+    description = description.charAt(0).toUpperCase() + description.slice(1);
+
     return {
       temp,
       description,
-      max,
-      min,
+      dt,
+      icon,
+      currentWeatherInfo: {
+        wind_speed,
+        humidity,
+        pop,
+      },
     };
   })();
 
-  const _skeletonRow = new HtmlElement({
+  let _weatherIcon;
+
+  const _contentContainer = new HtmlElement({
     type: "div",
-    classList: ["row"],
+    classList: ["current-weather-card"],
   });
 
-  const _skeletonColumn = new HtmlElement({
+  const _positionContainer = new HtmlElement({
     type: "div",
-    classList: ["twelve", "columns"],
+    id: "current-weather-card-container",
   });
-
-  const _container = new HtmlElement({
-    type: "div",
-    classList: [
-      "current-weather-card",
-      "flex",
-      "flex-column",
-      "flex-align-center",
-    ],
-  });
-
-  // Create the title container with the inner text as the users search term.
-  const _title = (function () {
-    const container = new HtmlElement({
-      type: "div",
-      classList: [
-        "flex",
-        "flex-row",
-        "flex-justify-center",
-        "flex-align-center",
-      ],
-    });
-
-    const _titleText = new HtmlElement({
-      type: "h2",
-      classList: ["m-0"],
-      innerText: cityName,
-    });
-
-    container.appendChild(_titleText);
-    return container;
-  })();
 
   const _temp = (function () {
     const container = new HtmlElement({
@@ -74,7 +54,7 @@ export function CurrentWeatherCard(weatherData = {}, rootNode, cityName) {
 
     const _text = new HtmlElement({
       type: "p",
-      classList: ["m-0", tempToColor(parsedWeatherData.temp)],
+      classList: ["m-0"],
       id: "main-temp",
       innerText: `${parsedWeatherData.temp}°`,
     });
@@ -106,50 +86,81 @@ export function CurrentWeatherCard(weatherData = {}, rootNode, cityName) {
     return container;
   })();
 
-  const _dailyTemps = (function () {
+  const _dateString = (function () {
+    const date = new Date(parsedWeatherData.dt);
+    const formatter = new Intl.DateTimeFormat("en-US", {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+    });
+
     const container = new HtmlElement({
       type: "div",
-      id: "current-weather-card-temps-container",
-      classList: [
-        "flex",
-        "flex-row",
-        "flex-justify-center",
-        "flex-algin-center",
-      ],
+      id: "date-string",
     });
 
-    const _highTemp = new HtmlElement({
+    const content = new HtmlElement({
       type: "p",
-      classList: ["m-0", "mr-5", tempToColor(parsedWeatherData.max)],
-      innerText: `H:${parsedWeatherData.max}°`,
+      innerText: formatter.format(date),
     });
 
-    const _lowTemp = new HtmlElement({
-      type: "p",
-      classList: ["m-0", "ml-5", tempToColor(parsedWeatherData.min)],
-      innerText: `L:${parsedWeatherData.min}°`,
-    });
-
-    container.appendChild(_lowTemp);
-    container.appendChild(_highTemp);
+    container.appendChild(content);
 
     return container;
   })();
 
-  const render = function () {
-    _skeletonRow.appendChild(_skeletonColumn);
-    _skeletonColumn.appendChild(_container);
-    _container.appendChild(_title);
-    _container.appendChild(_temp);
-    _container.appendChild(_description);
-    _container.appendChild(_dailyTemps);
+  const _currentWeatherData = currentWeatherInfo.call(
+    this,
+    parsedWeatherData.currentWeatherInfo
+  );
 
-    rootNode.appendChild(_skeletonRow);
+  const _setImage = function (image) {
+    const container = new HtmlElement({
+      type: "div",
+      id: "current-weather-image-container",
+    });
+    container.appendChild(image);
+    _weatherIcon = container;
+  };
+
+  /**
+   * Try to load an image from OpenWeather API. If this process fails, we will
+   * consume the error and continue with processing the user request. We can
+   * silently consume this error because we will simply not display an image if
+   * there is an error. Why log or stop execution simply because we can display
+   * an image? Rather, we continue with our process and forget about showing an
+   * image to the user.
+   */
+  const load = async function () {
+    const url = weather.getIconSrc(parsedWeatherData.icon, { large: true });
+    try {
+      const imageElement = await loadImage(url);
+      _setImage(imageElement);
+      return true;
+    } catch (error) {
+      console.log(error);
+      /**
+       * Return true. We will consume the error returned by the API and just
+       * not show an image. No big deal.
+       */
+      return true;
+    }
+  };
+
+  const render = function () {
+    _positionContainer.appendChild(_contentContainer);
+    _contentContainer.appendChild(_weatherIcon);
+    _contentContainer.appendChild(_temp);
+    _contentContainer.appendChild(_description);
+    _contentContainer.appendChild(_dateString);
+    _contentContainer.appendChild(_currentWeatherData);
+
+    rootNode.appendChild(_positionContainer);
   };
 
   const remove = function () {
-    _skeletonRow.remove();
+    _positionContainer.remove();
   };
 
-  return { render, remove };
+  return { render, remove, load };
 }

@@ -9,13 +9,14 @@ export function HourlyForecastCard(weatherData) {
   const _parsedWeatherData = (function () {
     let { temp, dt, pop } = weatherData;
     const { icon } = weatherData.weather[0];
-    const dateTime = new Date(Number.parseInt(dt.toString() + "000"));
+    const dateTime = new Date(Number.parseInt(dt * 1000));
     const time = new Intl.DateTimeFormat("en-US", {
       timeStyle: "short",
     }).format(dateTime);
     pop = Math.floor(pop * 100);
     temp = Math.round(temp);
     return {
+      dateTime,
       temp,
       icon,
       time,
@@ -26,7 +27,63 @@ export function HourlyForecastCard(weatherData) {
   const _container = new HtmlElement({
     type: "div",
     classList: ["hourly-forecast-card"],
+    id: determineIfNow(),
   });
+
+  /**
+   * This function is best described by example. This function compares the
+   * forecasted time and the current time. If the forecasted time falls within
+   * this current hour then the function returns "now", otherwise the function
+   * returns an empty string.
+   */
+  function determineIfNow() {
+    const currentDateTime = new Date();
+    const forecastDateTime = new Date(_parsedWeatherData.dateTime);
+
+    const isSameDay = (function () {
+      const dateFormatter = new Intl.DateTimeFormat("en-US", {
+        dateStyle: "short",
+      });
+      const currentDate = dateFormatter.format(currentDateTime);
+      const forecastDate = dateFormatter.format(forecastDateTime);
+      return currentDate === forecastDate;
+    })();
+
+    const hours = (function () {
+      const timeFormatter = new Intl.DateTimeFormat("en-US", {
+        minute: "numeric",
+      });
+
+      let areTheSame = (function () {
+        return currentDateTime.getHours() == forecastDateTime.getHours();
+      })();
+
+      let canRoundUp = (function () {
+        return Number.parseInt(timeFormatter.format(currentDateTime)) > 30;
+      })();
+
+      /**
+       * If current hour is 1 hour behind forecast time, return true. Otherwise
+       * return false
+       */
+      let oneHourDelta = (function () {
+        const currentHour = Number.parseInt(currentDateTime.getHours()) + 1;
+        return currentHour == forecastDateTime.getHours();
+      })();
+
+      return { areTheSame, canRoundUp, oneHourDelta };
+    })();
+
+    if (
+      isSameDay && //If this is true...
+      ((hours.areTheSame && !hours.canRoundUp) || //and ONE of these are true...
+        (hours.oneHourDelta && hours.canRoundUp))
+    ) {
+      return "now";
+    }
+
+    return "";
+  }
 
   /**
    * Try to load an image from OpenWeather API. If this process fails, we will
@@ -55,27 +112,28 @@ export function HourlyForecastCard(weatherData) {
     _container.appendChild(
       new HtmlElement({
         type: "p",
+        classList: [tempToColor(_parsedWeatherData.temp)],
+        innerText: `${_parsedWeatherData.temp}°`,
+      })
+    );
+    _container.appendChild(image);
+    _container.appendChild(
+      new HtmlElement({
+        type: "p",
         classList: ["time"],
         innerText: `${_parsedWeatherData.time}`,
       })
     );
-    _container.appendChild(image);
     // Show the rain percentage if it is over 20%
     if (_parsedWeatherData.pop > 20) {
       _container.appendChild(
         new HtmlElement({
           type: "p",
+          classList: ["rain-percentage"],
           innerText: `${_parsedWeatherData.pop}%`,
         })
       );
     }
-    _container.appendChild(
-      new HtmlElement({
-        type: "p",
-        classList: [tempToColor(_parsedWeatherData.temp)],
-        innerText: `${_parsedWeatherData.temp}°`,
-      })
-    );
     parentNode.appendChild(_container);
   };
 

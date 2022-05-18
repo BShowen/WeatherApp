@@ -1,0 +1,26 @@
+/* Larger than mobile */
+@media (min-width: 350px) {
+  #current-weather-info-container {
+    width: 100%;
+  }
+
+  #current-weather-info-content-container {
+    border-top:1px solid rgba(92, 184, 255, 0.6);
+    font-weight: bolder;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    padding-top: 15px;
+  }
+
+  #wind-speed-container, #humidity-container, #chance-of-rain-container {
+    min-width: 30%;
+    min-height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+}

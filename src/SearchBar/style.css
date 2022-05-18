@@ -1,0 +1,52 @@
+/* Larger than mobile */
+@media (min-width: 350px) {
+
+  .input-container {
+    padding: 10px 0;
+    background-image: linear-gradient(#30B9F5, #47BEF5);
+    width: 100%;
+    max-width: 95%;
+    margin-top:5px;
+    border-radius: 3.5rem;
+    
+    /* Search bar needs to be z-index:2 in order to be on top of the current-
+    weather-card, because current-weather-card has a border-shadow that needs 
+    to be behind the search bar otherwise the gradient background will not 
+    look right */
+    z-index: 2;
+  }
+  
+  .showing-results{
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  input[type=text]{
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+    height: 50px;
+    min-height: 50px;
+    max-height: 50px;
+    font-weight: bolder;
+    text-align: center;
+    font-size: 3rem;
+    margin: 0;
+    border: none;
+    background-color: inherit;
+    padding: 0 10px;
+  }
+
+  ::placeholder {
+    color: #262626;
+  }
+
+  input[type=text]:focus{ 
+    border: none;
+  }
+
+  input[type=text]:focus::placeholder{
+    font-size: 0px;
+  }
+}
