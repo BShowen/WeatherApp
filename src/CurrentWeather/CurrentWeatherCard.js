@@ -1,3 +1,4 @@
+import "./style.css";
 import { HtmlElement } from "../HelperFunctions/HtmlElement";
 import { tempToColor } from "../HelperFunctions/tempToColor";
 

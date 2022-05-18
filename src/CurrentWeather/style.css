@@ -1,0 +1,20 @@
+/* Larger than mobile */
+@media (min-width: 350px) {
+  .current-weather-card {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+    border-radius: 1rem;
+  }
+
+  .current-weather-card > div > p {
+    font-weight: bolder;
+    font-size: 3rem;
+  }
+
+  #current-weather-card-temps-container {
+    width: 100%;
+    justify-content: center;
+    gap: 20px;
+  }
+}

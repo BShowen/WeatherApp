@@ -1,3 +1,4 @@
+import "./style.css";
 import { HtmlElement } from "../HelperFunctions/HtmlElement.js";
 export function searchBar(rootNode, callBack) {
   const _componentContainer = new HtmlElement({

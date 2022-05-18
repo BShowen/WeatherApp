@@ -1,3 +1,4 @@
+import "./style.css";
 import { ForecastCard } from "./ForecastCard.js";
 import { HtmlElement } from "../HelperFunctions/HtmlElement.js";
 

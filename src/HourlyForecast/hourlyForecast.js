@@ -1,3 +1,4 @@
+import "./style.css";
 import { HourlyForecastCard } from "./HourlyForecastCard";
 import { HtmlElement } from "../HelperFunctions/HtmlElement";
 

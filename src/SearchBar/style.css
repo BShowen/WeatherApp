@@ -1,0 +1,10 @@
+/* Larger than mobile */
+@media (min-width: 350px) {
+  input[type=text]{
+    min-width: 100%;
+    min-height: 50px;
+    font-weight: bolder;
+    font-size: 2rem;
+    text-align: center;
+  }
+}
