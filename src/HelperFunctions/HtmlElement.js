@@ -32,5 +32,13 @@ export function HtmlElement(data = {}) {
     element.id = data.id;
   }
 
+  if (data.innerHTML) {
+    element.innerHTML = data.innerHTML;
+  }
+
+  if (data.childrenNodes) {
+    data.childrenNodes.forEach((childNode) => element.appendChild(childNode));
+  }
+
   return element;
 }
