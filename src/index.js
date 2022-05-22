@@ -110,5 +110,9 @@ import { hourlyForecast } from "./HourlyForecast/hourlyForecast";
    * hourlyForecast there is a button that, when clicked, will call this
    * function - loading the seven day forecast.
    */
-  function loadSevenDayForecast() {}
+  function loadSevenDayForecast() {
+    console.log("compacting");
+    currentWeatherCard.toCompactView();
+    console.log("compacting done");
+  }
 })();

@@ -86,6 +86,7 @@ export function CurrentWeatherCard(weatherData = {}, rootNode, cityName) {
 
     const _text = new HtmlElement({
       type: "p",
+      id: "weather-description-text",
       classList: ["m-0"],
       innerText: parsedWeatherData.description,
     });
@@ -150,11 +151,16 @@ export function CurrentWeatherCard(weatherData = {}, rootNode, cityName) {
 
   const render = function () {
     _currentWeatherCardContainer.appendChild(_currentWeatherCard);
-    _currentWeatherCard.appendChild(_currentWeatherImageContainer);
-    _currentWeatherCard.appendChild(_weatherInfoContainer);
+
+    _currentWeatherCard.appendChild(_currentWeatherInformationContainer);
+    _currentWeatherInformationContainer.appendChild(
+      _currentWeatherImageContainer
+    );
+    _currentWeatherInformationContainer.appendChild(_weatherInfoContainer);
     _weatherInfoContainer.appendChild(_weatherTempContainer);
     _weatherInfoContainer.appendChild(_currentWeatherCardDescriptionContainer);
     _currentWeatherCardDescriptionContainer.appendChild(_dateString);
+
     _currentWeatherCard.appendChild(_currentWeatherData);
     rootNode.appendChild(_currentWeatherCardContainer);
   };
@@ -163,5 +169,30 @@ export function CurrentWeatherCard(weatherData = {}, rootNode, cityName) {
     _currentWeatherCardContainer.remove();
   };
 
-  return { render, remove, load };
+  /**
+   * This function sets attributes on certain containers in order to make those
+   * containers render differently.
+   */
+  const toCompactView = function () {
+    [
+      _currentWeatherCardContainer,
+      _currentWeatherInformationContainer,
+      _currentWeatherImageContainer,
+      _weatherInfoContainer,
+    ].map((element) => element.classList.toggle("forecast-active"));
+
+    /**
+     * Do the same thing as in the map() above. However, we dont have direct
+     * access to the element that needs to be styled. But we have direct access
+     * to the parent element. We access the parent element, then get the child
+     * element, then add the classList to it.
+     */
+    [_weatherInfoContainer, _currentWeatherCardDescriptionContainer].map(
+      (element) => {
+        element.firstChild.toggleClass("forecast-active");
+      }
+    );
+  };
+
+  return { render, remove, load, toCompactView };
 }
