@@ -2,7 +2,12 @@ import "./style.css";
 import { HourlyForecastCard } from "./HourlyForecastCard";
 import { HtmlElement } from "../HelperFunctions/HtmlElement";
 
-export function hourlyForecast(rootNode) {
+/**
+ * rootNode = The node for this component to append itself to.
+ * callBack = The function that is called when the button within this componet
+ * is clicked.
+ */
+export function hourlyForecast(rootNode, callback) {
   // Store each forecast card in this array for future iteration.
   let hourlyForecasts = [];
 
@@ -42,6 +47,8 @@ export function hourlyForecast(rootNode) {
         innerText: "7 days >",
         id: "hourly-forecast-header-button",
       });
+
+      _btn.addEventListener("click", callback);
 
       _container.appendChild(_btn);
       return _container;

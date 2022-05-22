@@ -29,7 +29,7 @@ import { hourlyForecast } from "./HourlyForecast/hourlyForecast";
   const errorMessageComponent = new ErrorMessage(rootNode);
   let currentWeatherCard;
   let sevenDayForecastLoader = sevenDayForecast(rootNode);
-  let hourlyForecastLoader = hourlyForecast(rootNode);
+  let hourlyForecastLoader = hourlyForecast(rootNode, loadSevenDayForecast);
   const searchBarComponent = searchBar(rootNode, loadResults);
   searchBarComponent.render();
 
@@ -104,4 +104,11 @@ import { hourlyForecast } from "./HourlyForecast/hourlyForecast";
     hourlyForecastLoader.removeForecasts();
     searchBarComponent.reset();
   }
+
+  /**
+   * This function is passed into the constructor for hourlyForecast. Inside
+   * hourlyForecast there is a button that, when clicked, will call this
+   * function - loading the seven day forecast.
+   */
+  function loadSevenDayForecast() {}
 })();
