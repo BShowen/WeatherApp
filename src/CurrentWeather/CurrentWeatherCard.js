@@ -29,50 +29,59 @@ export function CurrentWeatherCard(weatherData = {}, rootNode, cityName) {
     };
   })();
 
-  let _weatherIcon;
-
-  const _contentContainer = new HtmlElement({
-    type: "div",
-    classList: ["current-weather-card"],
-  });
-
-  const _positionContainer = new HtmlElement({
+  const _currentWeatherCardContainer = new HtmlElement({
     type: "div",
     id: "current-weather-card-container",
   });
 
-  const _temp = (function () {
+  const _currentWeatherInformationContainer = new HtmlElement({
+    type: "div",
+    id: "current-weather-information-container",
+  });
+
+  const _currentWeatherCard = new HtmlElement({
+    type: "div",
+    id: "current-weather-card",
+  });
+
+  // This is the container that holds the image.
+  let _currentWeatherImageContainer;
+  // This method sets the _currentWeatherImageContainer variable.
+  const _setImage = function (image) {
+    const _imageContainer = new HtmlElement({
+      type: "div",
+      id: "current-weather-image-container",
+    });
+    _imageContainer.appendChild(image);
+    _currentWeatherImageContainer = _imageContainer;
+  };
+
+  const _weatherInfoContainer = new HtmlElement({
+    type: "div",
+    id: "weather-info-container",
+  });
+
+  const _weatherTempContainer = (function () {
     const container = new HtmlElement({
       type: "div",
-      classList: [
-        "flex",
-        "flex-row",
-        "flex-justify-center",
-        "flex-align-center",
-      ],
+      id: "weather-temp-container",
     });
 
-    const _text = new HtmlElement({
+    const _weatherTemp = new HtmlElement({
       type: "p",
       classList: ["m-0"],
-      id: "main-temp",
+      id: "weather-temp",
       innerText: `${parsedWeatherData.temp}°`,
     });
 
-    container.appendChild(_text);
+    container.appendChild(_weatherTemp);
     return container;
   })();
 
-  const _description = (function () {
+  const _currentWeatherCardDescriptionContainer = (function () {
     const container = new HtmlElement({
       type: "div",
       id: "current-weather-card-description-container",
-      classList: [
-        "flex",
-        "flex-row",
-        "flex-justify-center",
-        "flex-align-center",
-      ],
     });
 
     const _text = new HtmlElement({
@@ -109,19 +118,11 @@ export function CurrentWeatherCard(weatherData = {}, rootNode, cityName) {
     return container;
   })();
 
+  // This is the bottom component that holds the wind, humidity, and rain %.
   const _currentWeatherData = currentWeatherInfo.call(
     this,
     parsedWeatherData.currentWeatherInfo
   );
-
-  const _setImage = function (image) {
-    const container = new HtmlElement({
-      type: "div",
-      id: "current-weather-image-container",
-    });
-    container.appendChild(image);
-    _weatherIcon = container;
-  };
 
   /**
    * Try to load an image from OpenWeather API. If this process fails, we will
@@ -148,18 +149,18 @@ export function CurrentWeatherCard(weatherData = {}, rootNode, cityName) {
   };
 
   const render = function () {
-    _positionContainer.appendChild(_contentContainer);
-    _contentContainer.appendChild(_weatherIcon);
-    _contentContainer.appendChild(_temp);
-    _contentContainer.appendChild(_description);
-    _contentContainer.appendChild(_dateString);
-    _contentContainer.appendChild(_currentWeatherData);
-
-    rootNode.appendChild(_positionContainer);
+    _currentWeatherCardContainer.appendChild(_currentWeatherCard);
+    _currentWeatherCard.appendChild(_currentWeatherImageContainer);
+    _currentWeatherCard.appendChild(_weatherInfoContainer);
+    _weatherInfoContainer.appendChild(_weatherTempContainer);
+    _weatherInfoContainer.appendChild(_currentWeatherCardDescriptionContainer);
+    _currentWeatherCardDescriptionContainer.appendChild(_dateString);
+    _currentWeatherCard.appendChild(_currentWeatherData);
+    rootNode.appendChild(_currentWeatherCardContainer);
   };
 
   const remove = function () {
-    _positionContainer.remove();
+    _currentWeatherCardContainer.remove();
   };
 
   return { render, remove, load };
