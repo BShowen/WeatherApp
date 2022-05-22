@@ -82,6 +82,14 @@
     gap: 10px;
   }
 
+  .hide {
+    visibility: hidden;
+  }
+
+  .remove {
+    display: none !important;
+  }
+
 
   .hourly-forecast-card {
     display: flex;

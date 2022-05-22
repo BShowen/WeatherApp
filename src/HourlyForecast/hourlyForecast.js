@@ -58,6 +58,7 @@ export function hourlyForecast(rootNode, callback) {
 
       _btn.addEventListener("click", (e) => {
         e.preventDefault();
+        _headerTitle.classList.toggle("hide");
         _icon.classList.toggle("bi-caret-up-fill");
         _icon.classList.toggle("bi-caret-down-fill");
         callback();
@@ -138,5 +139,9 @@ export function hourlyForecast(rootNode, callback) {
     hourlyForecasts = [];
   };
 
-  return { loadForecast, renderForecast, removeForecasts };
+  const hideHourly = function () {
+    _body.classList.toggle("remove");
+  };
+
+  return { loadForecast, renderForecast, removeForecasts, hideHourly };
 }
