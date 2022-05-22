@@ -175,7 +175,6 @@ export function CurrentWeatherCard(weatherData = {}, rootNode, cityName) {
    */
   const toCompactView = function () {
     [
-      _currentWeatherCardContainer,
       _currentWeatherInformationContainer,
       _currentWeatherImageContainer,
       _weatherInfoContainer,
@@ -187,7 +186,7 @@ export function CurrentWeatherCard(weatherData = {}, rootNode, cityName) {
      * to the parent element. We access the parent element, then get the child
      * element, then add the classList to it.
      */
-    [_weatherInfoContainer, _currentWeatherCardDescriptionContainer].map(
+    [_currentWeatherCardDescriptionContainer, _weatherTempContainer].map(
       (element) => {
         element.firstChild.classList.toggle("forecast-active");
       }
