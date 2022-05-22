@@ -111,8 +111,6 @@ import { hourlyForecast } from "./HourlyForecast/hourlyForecast";
    * function - loading the seven day forecast.
    */
   function loadSevenDayForecast() {
-    console.log("compacting");
     currentWeatherCard.toCompactView();
-    console.log("compacting done");
   }
 })();
