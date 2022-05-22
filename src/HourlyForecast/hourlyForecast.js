@@ -137,11 +137,17 @@ export function hourlyForecast(rootNode, callback) {
       element.innerHTML = "";
     });
     hourlyForecasts = [];
+    _body.classList.remove("remove");
   };
 
-  const hideHourly = function () {
+  const toggleView = function () {
     _body.classList.toggle("remove");
   };
 
-  return { loadForecast, renderForecast, removeForecasts, hideHourly };
+  return {
+    loadForecast,
+    renderForecast,
+    removeForecasts,
+    toggleView,
+  };
 }

@@ -49,6 +49,7 @@ import { hourlyForecast } from "./HourlyForecast/hourlyForecast";
       await Promise.all([
         currentWeatherCard.load(),
         hourlyForecastLoader.loadForecast(weatherData),
+        sevenDayForecastLoader.loadForecast(weatherData),
       ]);
     } catch (error) {
       if (error.name == "InvalidSearchError") {
@@ -62,7 +63,7 @@ import { hourlyForecast } from "./HourlyForecast/hourlyForecast";
 
     currentWeatherCard.render();
     hourlyForecastLoader.renderForecast();
-    // sevenDayForecastLoader.renderForecast();
+    sevenDayForecastLoader.preRenderForecast();
     spinningLoader.stop();
     return Promise.resolve();
   }
@@ -100,7 +101,7 @@ import { hourlyForecast } from "./HourlyForecast/hourlyForecast";
   function clearPreviousSearchResults() {
     errorMessageComponent.remove();
     if (currentWeatherCard) currentWeatherCard.remove();
-    // sevenDayForecastLoader.removeForecasts();
+    sevenDayForecastLoader.removeForecasts();
     hourlyForecastLoader.removeForecasts();
     searchBarComponent.reset();
   }
@@ -111,7 +112,8 @@ import { hourlyForecast } from "./HourlyForecast/hourlyForecast";
    * function - loading the seven day forecast.
    */
   function loadSevenDayForecast() {
-    hourlyForecastLoader.hideHourly();
+    hourlyForecastLoader.toggleView();
     currentWeatherCard.toCompactView();
+    sevenDayForecastLoader.toggleView();
   }
 })();

@@ -23,7 +23,8 @@ export function sevenDayForecast(rootNode) {
    * a resolved promise and there is no image to display for that forecast card.
    */
   const loadForecast = async function (weatherData = {}) {
-    weatherData.daily.forEach((day) => {
+    weatherData = weatherData.daily.splice(1);
+    weatherData.forEach((day) => {
       dailyForecasts.push(new ForecastCard(day));
     });
 
@@ -42,7 +43,8 @@ export function sevenDayForecast(rootNode) {
   /**
    * This function renders each forecast card to the dom.
    */
-  const renderForecast = function () {
+  const preRenderForecast = function () {
+    _forecastContainer.classList.add("remove");
     dailyForecasts.forEach((forecast) => forecast.render(_forecastContainer));
     rootNode.appendChild(_forecastContainer);
   };
@@ -60,5 +62,9 @@ export function sevenDayForecast(rootNode) {
     dailyForecasts = [];
   };
 
-  return { loadForecast, renderForecast, removeForecasts };
+  const toggleView = function () {
+    _forecastContainer.classList.toggle("remove");
+  };
+
+  return { loadForecast, preRenderForecast, removeForecasts, toggleView };
 }
