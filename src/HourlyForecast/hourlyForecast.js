@@ -37,20 +37,32 @@ export function hourlyForecast(rootNode, callback) {
     })();
 
     const _sevenDayForecastButton = (function () {
-      const _container = new HtmlElement({
-        type: "div",
-        id: "hourly-forecast-header-button-container",
+      const _icon = new HtmlElement({
+        type: "i",
+        classList: ["bi", "bi-caret-up-fill"],
       });
 
       const _btn = new HtmlElement({
         type: "button",
-        innerText: "7 days >",
+        innerText: "7 days",
+        classList: ["caret-up"],
         id: "hourly-forecast-header-button",
+        childrenNodes: [_icon],
       });
 
-      _btn.addEventListener("click", callback);
+      const _container = new HtmlElement({
+        type: "div",
+        id: "hourly-forecast-header-button-container",
+        childrenNodes: [_btn],
+      });
 
-      _container.appendChild(_btn);
+      _btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        _icon.classList.toggle("bi-caret-up-fill");
+        _icon.classList.toggle("bi-caret-down-fill");
+        callback();
+      });
+
       return _container;
     })();
 
