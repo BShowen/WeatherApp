@@ -189,7 +189,7 @@ export function CurrentWeatherCard(weatherData = {}, rootNode, cityName) {
      */
     [_weatherInfoContainer, _currentWeatherCardDescriptionContainer].map(
       (element) => {
-        element.firstChild.toggleClass("forecast-active");
+        element.firstChild.classList.toggle("forecast-active");
       }
     );
   };
