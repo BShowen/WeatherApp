@@ -20,7 +20,7 @@ import { spinner } from "./Spinner/spinner";
 import { ErrorMessage } from "./HelperFunctions/ErrorMessage";
 import weather from "./weather";
 import { CurrentWeatherCard } from "./CurrentWeather/CurrentWeatherCard";
-// import { sevenDayForecast } from "./SevenDayForecast/sevenDayForecast";
+import { sevenDayForecast } from "./SevenDayForecast/sevenDayForecast";
 import { hourlyForecast } from "./HourlyForecast/hourlyForecast";
 
 (function () {
@@ -28,7 +28,7 @@ import { hourlyForecast } from "./HourlyForecast/hourlyForecast";
   const spinningLoader = spinner();
   const errorMessageComponent = new ErrorMessage(rootNode);
   let currentWeatherCard;
-  // let sevenDayForecastLoader = sevenDayForecast(rootNode);
+  let sevenDayForecastLoader = sevenDayForecast(rootNode);
   let hourlyForecastLoader = hourlyForecast(rootNode);
   const searchBarComponent = searchBar(rootNode, loadResults);
   searchBarComponent.render();
@@ -44,15 +44,11 @@ import { hourlyForecast } from "./HourlyForecast/hourlyForecast";
     clearPreviousSearchResults();
     try {
       weatherData = await weather.getWeather(cityName);
-      const cityAndState = weatherData.state
-        ? `${weatherData.name}, ${weatherData.state}`
-        : weatherData.name;
-      searchBarComponent.setValue(cityAndState);
+      formatUserSearchTerm(weatherData);
       loadCurrentWeather(weatherData, cityName);
       await Promise.all([
         currentWeatherCard.load(),
         hourlyForecastLoader.loadForecast(weatherData),
-        // sevenDayForecastLoader.loadForecast(weatherData),
       ]);
     } catch (error) {
       if (error.name == "InvalidSearchError") {
@@ -69,6 +65,17 @@ import { hourlyForecast } from "./HourlyForecast/hourlyForecast";
     // sevenDayForecastLoader.renderForecast();
     spinningLoader.stop();
     return Promise.resolve();
+  }
+
+  /**
+   * change "Orlando" to "Orlando, Florida" etc.
+   * This changes the users search term to include the state.
+   */
+  function formatUserSearchTerm(weatherData) {
+    const cityAndState = weatherData.state
+      ? `${weatherData.name}, ${weatherData.state}`
+      : weatherData.name;
+    searchBarComponent.setValue(cityAndState);
   }
 
   /**
