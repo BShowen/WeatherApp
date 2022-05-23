@@ -137,11 +137,13 @@ export function hourlyForecast(rootNode, callback) {
       element.innerHTML = "";
     });
     hourlyForecasts = [];
-    _body.classList.remove("remove");
+    // _body.classList.remove("remove");
   };
 
   const toggleView = function () {
-    _body.classList.toggle("remove");
+    _hourlyForecastContainer.classList.toggle(
+      "shrink-hourly-forecast-container"
+    );
   };
 
   return {

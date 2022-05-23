@@ -1,16 +1,26 @@
 /* Larger than mobile */
 @media (min-width: 350px) {
   .forecast-container {
+    height: 0;
+    padding: 1px 0;
     width: 95%;
-    height: 100%;
-    /* margin: 15px auto; */
     overflow: scroll;
-
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    /* border: 1px solid red; */
+
+    animation-duration: 250ms;
+    animation-fill-mode: forwards;
+    animation-name: slideUp; 
+  }
+
+  @keyframes slideUp {
+    from {
+      height: 0;
+    }
+  
+    to {
+      height: 100%;
+    }
   }
 
   .forecast-card {
@@ -37,5 +47,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+  .remove {
+    display: none;
   }
 }

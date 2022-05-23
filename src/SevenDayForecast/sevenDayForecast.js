@@ -46,7 +46,6 @@ export function sevenDayForecast(rootNode) {
   const preRenderForecast = function () {
     _forecastContainer.classList.add("remove");
     dailyForecasts.forEach((forecast) => forecast.render(_forecastContainer));
-    rootNode.appendChild(_forecastContainer);
   };
 
   /**
@@ -64,6 +63,7 @@ export function sevenDayForecast(rootNode) {
 
   const toggleView = function () {
     _forecastContainer.classList.toggle("remove");
+    rootNode.appendChild(_forecastContainer);
   };
 
   return { loadForecast, preRenderForecast, removeForecasts, toggleView };

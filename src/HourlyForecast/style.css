@@ -1,21 +1,30 @@
 /* Larger than mobile */
 @media (min-width: 350px) {
   .hourly-forecast-container {
-    /* Position children */
-
-    /* Styling */
-     /* font-weight: bolder; */
     min-width: 100%;
     max-width: 100%;
-    /* height: 180px; */
-    /* overflow: scroll; */
-    /* padding: 10px 5px; */
-    /* background-color: #00031C;  */
+
+    /* Position children */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    flex-wrap: nowrap;
+    height: min-content;
+    overflow: hidden;
+    height: 100%;
+  }
+
+  .shrink-hourly-forecast-container {
+    animation-duration: 150ms;
+    animation-fill-mode: forwards;
+    animation-name: decreaseHeight; 
+  }
+  @keyframes decreaseHeight {
+    0% {height: 90%;} 
+    25% {height: 75%;} 
+    50% {height: 50%;} 
+    75% {height: 25%;} 
+    100% {height: 7.5rem;} 
   }
 
   #hourly-forecast-header-container {
@@ -82,12 +91,36 @@
     gap: 10px;
   }
 
+  .remove-hourly-forecast {
+    animation-duration: 10s;
+    animation-fill-mode: forwards;
+    /* animation-name: shiftBack;  */
+  }
+  @keyframes shiftBack {
+    0% {
+      visibility: hidden !important;
+      /* position: relative; */
+      /* z-index: -1; */
+      height: 90%;
+    }
+    25% {height: 50%}
+    50% {height: 10%}
+    75% {height: 0%}
+    100% {
+      height: 0%;
+      position: absolute;
+      z-index: -1;
+    }    
+  }
+
+  /* This is used to hide the "Today" text in the hourly forecast container */
   .hide {
     visibility: hidden;
   }
 
+  /* Used to remove the hourly forecast when the 7day forecast is rendered */
   .remove {
-    display: none !important;
+    /* display: none !important; */
   }
 
 
